@@ -149,6 +149,10 @@ int Controller::SetLightBar(OrbisPadColor *inputColor) {
   return scePadSetLightBar(this->pad, inputColor);
 }
 
+int Controller::ResetLightBar() {
+  return scePadResetLightBar(this->pad);
+}
+
 int Controller::SetVibration(const OrbisPadVibeParam *param) {
   return scePadSetVibration(this->pad, param);
 }

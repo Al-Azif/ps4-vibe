@@ -48,6 +48,8 @@ void terminate() {
   g_Vibra.smMotor = 0;
   g_Controller->SetVibration(&g_Vibra);
 
+  g_Controller->ResetLightBar();
+
   if (g_LibLogHandle >= 0) {
     sceKernelStopUnloadModule(g_LibLogHandle, 0, 0, 0, NULL, NULL);
   }

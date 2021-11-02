@@ -40,6 +40,7 @@ public:
   bool DpadLeftPressed();
   bool TouchpadPressed();
   int SetLightBar(OrbisPadColor *inputColor);
+  int ResetLightBar();
   int SetVibration(const OrbisPadVibeParam *param);
 };
 
