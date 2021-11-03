@@ -69,8 +69,7 @@ void initialize() {
     fail("Failed to start the libLog library");
   }
 
-  if (logInitalize(g_LibLogHandle) != 0) {
-    sceKernelStopUnloadModule(g_LibLogHandle, 0, 0, 0, NULL, NULL);
+  if (logInitalize(g_LibLogHandle) != 0) 
     fail("Failed to initialize the libLog library's functions");
   }
 
