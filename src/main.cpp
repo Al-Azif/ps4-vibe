@@ -69,7 +69,7 @@ void initialize() {
     fail("Failed to start the libLog library");
   }
 
-  if (logInitalize(g_LibLogHandle) != 0) 
+  if (logInitalize(g_LibLogHandle) != 0) {
     fail("Failed to initialize the libLog library's functions");
   }
 
