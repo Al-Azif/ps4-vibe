@@ -2,6 +2,8 @@
 
 #include "controller.h"
 
+#include "libLog.h"
+
 Controller::Controller() {
 }
 
@@ -11,7 +13,7 @@ Controller::~Controller() {
 bool Controller::Init(int controllerUserID) {
   // Initialize the Pad library
   if (scePadInit() != 0) {
-    // DEBUGLOG << "[DEBUG] [ERROR] Failed to initialize pad library!";
+    logKernel(LL_Error, "%s", "Failed to initialize pad library!");
     return false;
   }
 
@@ -29,7 +31,7 @@ bool Controller::Init(int controllerUserID) {
   this->pad = scePadOpen(this->userID, 0, 0, NULL);
 
   if (this->pad < 0) {
-    // DEBUGLOG << "[DEBUG] [ERROR] Failed to open pad!";
+    logKernel(LL_Error, "%s", "Failed to open pad!");
     return false;
   }
 

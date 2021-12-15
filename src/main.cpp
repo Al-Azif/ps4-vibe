@@ -3,21 +3,19 @@
 
 // License: GPL-3.0
 
-#include <cstddef>
-#include <cstdlib>
+#include "controller.h"
+#include "graphics.h"
+
+#include "libLog.h"
+#include "notifi.h"
 
 #include <orbis/Pad.h>
 #include <orbis/SystemService.h>
 #include <orbis/UserService.h>
 #include <orbis/libkernel.h>
 
-#include "controller.h"
-#include "graphics.h"
-#include "libLog_stub.h"
-#include "notifi.h"
-
-// Handle for libLog
-int g_LibLogHandle = -1;
+#include <cstddef>
+#include <cstdlib>
 
 // Dimensions for the 2D scene
 #define FRAME_WIDTH 1920
@@ -49,15 +47,11 @@ void terminate() {
   g_Controller->SetVibration(&g_Vibra);
 
   g_Controller->ResetLightBar();
-
-  if (g_LibLogHandle >= 0) {
-    sceKernelStopUnloadModule(g_LibLogHandle, 0, 0, 0, NULL, NULL);
-  }
 }
 
 // This function will display p_Message, then "cleanly" close the application
 void fail(const char *p_Message) {
-  printf("%s", p_Message); // Flawfinder: ignore
+  logKernel(LL_Fatal, "%s", p_Message);
   notifi(NULL, "%s", p_Message);
   terminate();
   sceSystemServiceLoadExec("exit", NULL);
@@ -65,17 +59,6 @@ void fail(const char *p_Message) {
 
 // Initalize
 void initialize() {
-  if ((g_LibLogHandle = sceKernelLoadStartModule("/app0/sce_module/libLog.prx", 0, 0, 0, NULL, NULL)) < 0) {
-    fail("Failed to start the libLog library");
-  }
-
-  if (logInitalize(g_LibLogHandle) != 0) {
-    fail("Failed to initialize the libLog library's functions");
-  }
-
-  // We know the logging is initalized here so we can use it after this point
-  logKernel(LL_Info, "%s", "libLog.prx Initialized");
-
   g_Vibra.lgMotor = 0;
   g_Vibra.smMotor = 0;
 

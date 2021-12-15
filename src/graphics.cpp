@@ -1,13 +1,15 @@
 // OpenOrbis Toolchain, https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain
 
+#include "graphics.h"
+
+#include "libLog.h"
+
+#include <string>
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <string>
-
-#include "graphics.h"
 
 Scene2D::Scene2D(int w, int h, int pixelDepth) {
   this->width = w;
@@ -24,7 +26,7 @@ bool Scene2D::Init(size_t memSize, int numFrameBuffers) {
   this->videoMem = NULL;
 
   if (this->video < 0) {
-    // DEBUGLOG << "Failed to open a video out handle: " << std::string(strerror(errno));
+    logKernel(LL_Error, "Failed to open a video out handle: %s", std::string(strerror(errno)).c_str());
     return false;
   }
 
@@ -33,7 +35,8 @@ bool Scene2D::Init(size_t memSize, int numFrameBuffers) {
   rc = sceSysmoduleLoadModule(0x009A);
 
   if (rc < 0) {
-    // DEBUGLOG << "Failed to load freetype: " << std::string(strerror(errno));
+    logKernel(LL_Error, "Failed to load freetype: %s", std::string(strerror(errno)).c_str());
+
     return false;
   }
 
@@ -41,23 +44,23 @@ bool Scene2D::Init(size_t memSize, int numFrameBuffers) {
   rc = FT_Init_FreeType(&this->ftLib);
 
   if (rc != 0) {
-    // DEBUGLOG << "Failed to initialize freetype: " << std::string(strerror(errno));
+    logKernel(LL_Error, "Failed to initialize freetype: %s", std::string(strerror(errno)).c_str());
     return false;
   }
 #endif
 
   if (!initFlipQueue()) {
-    // DEBUGLOG << "Failed to initialize flip queue: " << std::string(strerror(errno));
+    logKernel(LL_Error, "Failed to initialize flip queue: %s", std::string(strerror(errno)).c_str());
     return false;
   }
 
   if (!allocateVideoMem(memSize, 0x200000)) {
-    // DEBUGLOG << "Failed to allocate video memory: " << std::string(strerror(errno));
+    logKernel(LL_Error, "Failed to allocate video memory: %s", std::string(strerror(errno)).c_str());
     return false;
   }
 
   if (!allocateFrameBuffers(numFrameBuffers)) {
-    // DEBUGLOG << "Failed to allocate frame buffers: " << std::string(strerror(errno));
+    logKernel(LL_Error, "Failed to allocate frame buffers: %s", std::string(strerror(errno)).c_str());
     return false;
   }
 
