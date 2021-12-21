@@ -6,7 +6,7 @@ CONTENT_ID    := IV0000-AZIF00001_00-PS4VIBE000000000
 
 # Libraries linked into the ELF
 LIBS          := -lc -lkernel -lc++ -lSceSystemService -lSceSysmodule -lSceVideoOut -lSceUserService -lScePad -lSceFreeType
-LIBS					+= -Llibs -lLog
+LIBS          += -Llibs -lLog
 
 # Directorys to include
 INCLUDES      := -Iinclude -Iexternal
